@@ -48,10 +48,22 @@ namespace eosio { namespace vm {
          _index = index+1;
       }
       size_t       current_index() const { return _index; }
-      ElemT&       peek() { return _store[_index - 1]; }
-      const ElemT& peek() const { return _store[_index - 1]; }
-      ElemT&       peek(size_t i) { return _store[_index - 1 - i]; }
-      ElemT        get_back(size_t i) { return _store[_index - 1 - i]; }
+      ElemT&       peek() { 
+         EOS_VM_ASSERT(_index >= 1, wasm_interpreter_exception, "invalid stack index");
+         return _store[_index - 1]; 
+      }
+      const ElemT& peek() const { 
+         EOS_VM_ASSERT(_index >= 1, wasm_interpreter_exception, "invalid stack index");
+         return _store[_index - 1]; 
+      }
+      ElemT&       peek(size_t i) { 
+         EOS_VM_ASSERT(_index >= 1 + i, wasm_interpreter_exception, "invalid stack index");
+         return _store[_index - 1 - i]; 
+      }
+      ElemT        get_back(size_t i) { 
+         EOS_VM_ASSERT(_index >= 1 + i, wasm_interpreter_exception, "invalid stack index");
+         return _store[_index - 1 - i]; 
+      }
       void         trim(size_t amt) { _index -= amt; }
       size_t       size() const { return _index; }
 

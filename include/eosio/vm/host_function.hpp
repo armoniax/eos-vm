@@ -578,7 +578,12 @@ namespace eosio { namespace vm {
 
       template <typename Execution_Context>
       void operator()(Cls* host, Execution_Context& ctx, uint32_t index) {
-         const auto& _func = get_mappings<wasm_allocator>().functions[index];
+         auto funcs = get_mappings<wasm_allocator>().functions;
+         EOS_VM_ASSERT( index < funcs.size(), wasm_interpreter_exception, "funcs empty or index overflow" );
+
+         const auto& _func = funcs[index];
+         EOS_VM_ASSERT( func != null, wasm_interpreter_exception, "func cannot be null" );
+
          std::invoke(_func, host, ctx.get_wasm_allocator(), ctx.get_operand_stack());
       }
    };
