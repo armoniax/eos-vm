@@ -582,7 +582,7 @@ namespace eosio { namespace vm {
          EOS_VM_ASSERT( index < funcs.size(), wasm_interpreter_exception, "funcs empty or index overflow" );
 
          const auto& _func = funcs[index];
-         EOS_VM_ASSERT( func != null, wasm_interpreter_exception, "func cannot be null" );
+         EOS_VM_ASSERT( _func != NULL, wasm_interpreter_exception, "func cannot be NULL" );
 
          std::invoke(_func, host, ctx.get_wasm_allocator(), ctx.get_operand_stack());
       }
